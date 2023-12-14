@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.gesture.Gesture;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,7 +38,11 @@ public class MainActivity extends AppCompatActivity {
     private VideoView video;
 
     private ImageButton buttonLike;
+    private ImageButton buttonShare;
     private int videoNum = 1;
+
+    private SharedPreferences prefs;
+    SharedPreferences.Editor editor;
     private class VideoListener implements View.OnTouchListener {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
@@ -91,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
     void createNewVideo() {
         Uri uri = Uri.parse(String.format("https://storage.googleapis.com/rikrok-24942.appspot.com/Videos/%o.mp4", videoNum));
         videoNum++;
+        editor.putInt("video_num", videoNum);
+        editor.apply();
         video.setVideoURI(uri);
         video.start();
     }
@@ -103,14 +110,23 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        prefs = getSharedPreferences("label", 0);
+        editor = prefs.edit();
+        videoNum = prefs.getInt("video_num", 1);
+
         video = findViewById(R.id.video_view);
-        createNewVideo();
         video.setOnTouchListener(new VideoListener());
+        createNewVideo();
+
         detector = new GestureDetector(this, new VideoGestureListener());
 
-        buttonLike = findViewById(R.id.button_like);
-        buttonLike.setOnClickListener(new LikeListener());
-
+//        buttonLike = findViewById(R.id.button_like);
+//        buttonLike.setOnClickListener(new LikeListener());
+//
+//        buttonShare = findViewById(R.id.button_share);
+//        buttonShare.setOnClickListener(new ShareListener());
+//        buttonSettings = findViewById(R.id.button_settings);
+//        buttonSettings.setOnClickListener(new SettingsListener());
     }
 
     class VideoGestureListener extends GestureDetector.SimpleOnGestureListener {

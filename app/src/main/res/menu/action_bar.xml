@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- "Mark Favorite", must appear as action button if possible. -->
+    <item
+        android:id="@+id/action_liked"
+        android:icon="@drawable/like"
+        android:title="@string/action_liked"/>
+
+    <!-- Settings, must always be in the overflow. -->
+    <item android:id="@+id/action_settings"
+        android:icon="@drawable/like"
+        android:title="@string/action_settings" />
+</menu>
